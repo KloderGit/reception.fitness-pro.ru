@@ -26,9 +26,8 @@ module MongoDb =
     let ModelToDto (x:Reception) = { Key = x.Key; Reception = x }
     let DtoToModel x = x.Reception
 
-    let create ( item : Reception ) = 
-        item |> ModelToDto |> testCollection.InsertOne
+    let Create item = item |> ModelToDto |> testCollection.InsertOne
 
-    let readAll =
+    let ReadAll =
         let result = testCollection.Find(Builders.Filter.Empty).ToEnumerable()
         Seq.map DtoToModel result

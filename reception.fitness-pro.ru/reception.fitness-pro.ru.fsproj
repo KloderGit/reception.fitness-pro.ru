@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Reception.Logic\Reception.Logic.fsproj" />
+    <ProjectReference Include="..\Reception.Logic\reception.logic.fsproj" />
   </ItemGroup>
 
 </Project>

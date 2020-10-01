@@ -9,7 +9,6 @@ module Logic =
 
     let CreateReception dto =
         let model = Convert.ReceptionDtoToModel dto
-        Reception.Mongo.MongoDb.create model
+        Reception.Mongo.MongoDb.Create model
 
-    let GetAll = 
-        Reception.Mongo.MongoDb.readAll
+    let GetAll = Reception.Mongo.MongoDb.ReadAll

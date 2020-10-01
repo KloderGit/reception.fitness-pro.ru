@@ -26,3 +26,7 @@ type ReceptionController () =
 
         Logic.GetAll
 
+    [<HttpGet>]
+    [<Route("GetAll")>]
+    member this.GetAl()=
+        Logic.GetAll
