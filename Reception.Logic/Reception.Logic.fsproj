@@ -7,7 +7,12 @@
   <ItemGroup>
     <Compile Include="Dto\Dto.fs" />
     <Compile Include="Convert.fs" />
-    <Compile Include="Logic.fs" />
+    <Compile Include="EducationLogic.fs" />
+    <Compile Include="ReceptionLogic.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="lc.fitness-pro.library" Version="1.2.5" />
   </ItemGroup>
 
   <ItemGroup>

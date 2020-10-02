@@ -5,7 +5,7 @@ open Reception.Mongo.Model.Dto
 open System
 open Reception.Logic
 
-module Logic =
+module Reception =
 
     let CreateReception dto =
         let model = Convert.ReceptionDtoToModel dto

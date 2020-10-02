@@ -22,11 +22,11 @@ type ReceptionController () =
          //let dds = System.Text.Json.JsonSerializer.Deserialize<ReceptionDes>(asd)
  
         let dto = viewmodel |> Convert.ViewmodelToDto 
-        Logic.CreateReception dto
+        Reception.CreateReception dto
 
-        Logic.GetAll
+        Reception.GetAll
 
     [<HttpGet>]
     [<Route("GetAll")>]
     member this.GetAl()=
-        Logic.GetAll
+        Reception.GetAll

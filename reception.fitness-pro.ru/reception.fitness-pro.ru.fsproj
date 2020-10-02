@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Controllers\Education\Education.fs" />
     <Compile Include="Controllers\Reception\ViewModel.fs" />
     <Compile Include="Controllers\Reception\ReceptionModule.fs" />
     <Compile Include="Controllers\Reception\ReceptionController.fs" />
