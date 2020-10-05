@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="lc.fitness-pro.library" Version="1.2.5" />
+    <PackageReference Include="lc.fitness-pro.library" Version="1.2.6" />
   </ItemGroup>
 
   <ItemGroup>
