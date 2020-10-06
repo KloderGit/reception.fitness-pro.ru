@@ -6,6 +6,7 @@ open System
 open Reception.Logic
 open lc.fitnesspro.library
 open System.Linq
+open lc.fitnesspro.library.Model
 
 module Education =
 
@@ -29,7 +30,7 @@ module Education =
 
     let CollectDisciplines (program: Model.Program) =
         let arr = program.Disciplines
-        Seq.map (fun (x:Model.DisciplineInfo) -> {| Program = program.Title; Discipline = {| Key = x.DisciplineKey; Title = x.Discipline.Description  |}; ControlType = x.ControlTypeKey |}) arr
+        Seq.map (fun (x:Model.DisciplineInfo) -> {| Program = program.Title; Discipline = {| Key = x.DisciplineKey; Title = x.Discipline.Description; ControlType = x.ControlTypeKey  |} |}) arr
 
     //let asd (prog:Model.Program) =
     //    let disciplines = Seq.map getDiscipline prog.Disciplines
@@ -37,18 +38,47 @@ module Education =
     //        Seq.map (fun (x)->{| Key =x.Key; Title = x.Title; ControlKey =x.ControlTypeKey; Program = prog.Title |} ) disciplines
     //    coll
 
+    type AttestationInfo = { ControlKey: Guid; ProgramTitle: string }
+
+    type AttestationVM =
+        {
+            Key: Guid
+            Title: string
+            Info: seq<AttestationInfo>
+        }
+
+    let groupTo (group:IGrouping<_,_>) =
+        {Key = group.Key.Key; Title = group.Key.Title; Info = Seq.empty}
+
+
     let Get = 
-        let accumuleted = GetAttestation |> Async.RunSynchronously |> Seq.map CollectDisciplines 
-        let collected = Seq.concat accumuleted
-        let grouped = collected.GroupBy(fun x->x.Discipline.Key)
-        let result = 
-            grouped |> 
-            Seq.map (fun x-> 
-                {| 
-                    Key = x.Key
-                    Title = x.First().Discipline.Title
-                    ControlType = x.First().ControlType
-                    Programs = x.Select(fun y->y.Program) 
-                 |}) 
-        result
         
+        let programs = GetAttestation |> Async.RunSynchronously |> Seq.cast<Program>
+
+        let disciplines = 
+            programs 
+            |> Seq.map (fun prog -> Seq.map (fun (dis:DisciplineInfo) -> {| Key = dis.DisciplineKey; Title = dis.Discipline.Description|} ) prog.Disciplines)
+            |> Seq.concat
+            |> Seq.distinct
+
+        let fn1 (pr:Model.Program) = 
+            {| ProgramKey = pr.RefKey; ProgramTitle = pr.Description|}
+
+        let fn1 (ds:DisciplineInfo) =
+            {| DisciplineKey = ds.DisciplineKey; DisciplineTitle = ds.Discipline.Description |}
+
+        let disInProg (gd:Guid) =
+            
+            let asdd dsp : bool = 
+                Seq.contains  dsp
+
+            let prs = Seq.where (fun x-> (Seq. (fun y -> y.DisciplineKey = gd) x.Disciplines) ) programs
+            Seq.map (fun (x:Model.Program)-> {| Key = x.RefKey; Title = x.Description |}) prs
+
+
+        Seq.map fn1 disciplines
+
+
+
+    
+
