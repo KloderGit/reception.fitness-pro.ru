@@ -30,6 +30,8 @@ type Startup private () =
         if (env.IsDevelopment()) then
             app.UseDeveloperExceptionPage() |> ignore
 
+        app.UseCors(fun builder -> builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod() |> ignore ) |> ignore
+
         app.UseHttpsRedirection() |> ignore
         app.UseRouting() |> ignore
 
