@@ -1,0 +1,2 @@
+﻿module reception.domain.Models
+
