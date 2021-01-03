@@ -4,37 +4,72 @@ using System.Text;
 
 namespace reception.database.mongodb.Dto
 {
-    public abstract class SheduleDto
+    public enum LimitType
     {
+        Seating,
+        Number,
+        Free
     }
 
-    public class Data 
-        : SheduleDto
+    public enum VariantType
     {
-        public DateTime Date { get;set;}
-        public Limitation Limitation { get; set; }
+        Date,
+        Dateless
     }
 
-    public class DataLess
-    : SheduleDto
+    public class ScheduleDto
     {
-        public Limitation Limitation { get; set; }
-    }
+        public LimitType LimitType { get; set; }
+        public VariantType VariantType { get; set; }
+        public Limit Limit { get; set; }
 
-    public abstract class Limitation
-    {
         public IEnumerable<PositionDto> Positions { get; set; }
+
+        public ScheduleDto(VariantType variant, LimitType limit)
+        {
+            LimitType = limit;
+            VariantType = variant;
+        }
     }
 
-    public class Seating : Limitation
-    {}
-
-    public class Number : Limitation
+    public class DataVariant : ScheduleDto
     {
-        public int Count { get;set; }
+        public DateTime Date { get; set; }
+
+        public DataVariant(DateTime date, Limit limitValue)
+            : base(VariantType.Date, limitValue.LimitType)
+        {
+            Date = date;
+            Limit = limitValue;
+        }
+    }
+    public class DataLessVariant : ScheduleDto
+    {
+        public DataLessVariant(Limit limitValue)
+            : base(VariantType.Dateless, limitValue.LimitType)
+        {
+            Limit = limitValue;
+        }
     }
 
-    public class NoLimit : Limitation
+    public class Limit
     {
+        public virtual LimitType LimitType { get; set; }
+    }
+
+    public class NumberLmt : Limit
+    {
+        public override LimitType LimitType { get; set; } = Dto.LimitType.Number;
+        public int Count { get; set; }
+    }
+
+    public class SeatingLmt: Limit
+    {
+        public override LimitType LimitType { get; set; } = Dto.LimitType.Seating;
+    }
+
+    public class FreeLmt: Limit
+    {
+        public override LimitType LimitType { get; set; } = Dto.LimitType.Free;
     }
 }

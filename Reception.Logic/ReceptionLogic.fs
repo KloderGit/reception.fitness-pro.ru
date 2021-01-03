@@ -1,14 +1,8 @@
-﻿namespace Reception.Logic
-
-open Reception.Domain
-open Reception.Mongo.Model.Dto
-open System
-open Reception.Logic
+﻿namespace Logic
 
 module Reception =
 
-    let CreateReception dto =
-        let model = Convert.ReceptionDtoToModel dto
-        Reception.Mongo.MongoDb.Create model
+    let CreateReception model =
+        Mongo.Database.Create model
 
-    let GetAll = Reception.Mongo.MongoDb.ReadAll
+    let GetAll = Mongo.Database.ReadAll

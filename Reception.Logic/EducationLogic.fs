@@ -1,4 +1,4 @@
-﻿namespace Reception.Logic
+﻿namespace Logic
 
 open System
 open lc.fitnesspro.library

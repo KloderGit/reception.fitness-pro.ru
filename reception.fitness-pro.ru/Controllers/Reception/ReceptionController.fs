@@ -1,14 +1,10 @@
-﻿namespace Reception.Controllers
+﻿namespace Controllers
 
-open System
-open System.Collections.Generic
-open System.Linq
-open System.Threading.Tasks
 open Microsoft.AspNetCore.Mvc
-open Microsoft.Extensions.Logging
-open Reception
-open Reception.Logic
-open Reception.Module
+open Logic
+open Module.Reception
+open ViewModel.Reception
+open System
 
 [<ApiController>]
 [<Route("[controller]")>]
@@ -18,11 +14,8 @@ type ReceptionController () =
     [<HttpPost>]
     [<Route("Create")>]
     member this.Create(viewmodel)=
-         //let asd = System.Text.Json.JsonSerializer.Serialize(x)
-         //let dds = System.Text.Json.JsonSerializer.Deserialize<ReceptionDes>(asd)
- 
-        let dto = viewmodel |> Convert.ViewmodelToDto 
-        Reception.CreateReception dto
+        let model = viewmodel |> Convert.ViewModelToModel 
+        Logic.Reception.CreateReception model
 
         Reception.GetAll
 
@@ -30,3 +23,16 @@ type ReceptionController () =
     [<Route("GetAll")>]
     member this.GetAl()=
         Reception.GetAll
+
+    [<HttpGet>]
+    [<Route("CreateVM")>]
+    member this.CreateVM()=        
+        let vm =
+            {
+                CreateReceptionViewModel.Date = Some (DateTime.Now)
+                Employees = seq{Guid.NewGuid()}
+                EventKeys = seq{Guid.NewGuid()}
+                SubscribeLimit = SubscribeLimitViewModel.Count 45
+                Constraints = None
+            }
+        vm

@@ -1,30 +1,39 @@
-﻿namespace Reception.Module
+﻿namespace Module.Reception
 
-open Reception.ViewModel
-open Reception.Logic.Dto
+open System
+open Domain
+open Domain.Domain
+open ViewModel.Reception
 
 module Convert =
 
-    let private ConvertConstrait (x : ConstraintsViewModel) =
-            {
-                ProgramKeys = x.ProgramKeys
-                GroupKeys = x.GroupKeys
-                SubGroupKeys = x.SubGroupKeys
-                CheckContractExpired =  x.CheckContractExpired
-            }
+    let private DatetimeToPosition (item:DateTime) : Position =
+        {
+            Key = Guid.NewGuid()
+            IsActive = true
+            DataVersion = DateTime.UtcNow.Ticks
+            StudentKey = Guid.Empty
+            DisciplineKey = Guid.Empty
+            Result = Result.NoResult
+            Comment = String.Empty
+            History = Seq.empty
+            Time = Some (item.Hour, item.Minute)
+        }            
+            
+    
 
-    let ViewmodelToDto (item) =
-            {
-                ResponsibleUserKey = item.TeacherKey
-                DisciplineKeys = Some item.DisciplineKeys.Value
-                Date = item.Date
-                SubscribeLimit = 
-                    match item.SubscribeLimit with
-                    | SubscribeLimitViewModel.Count cnt -> SubscribeLimitDto.Count cnt
-                    | SubscribeLimitViewModel.Free -> SubscribeLimitDto.Free
-                    | SubscribeLimitViewModel.Times tms -> SubscribeLimitDto.Times tms
-                Constraints = 
-                    match item.Constraints with
-                    | None -> None
-                    | Some x -> Some (ConvertConstrait x)
-            }
+    let ViewModelToModel (viewmodel:CreateReceptionViewModel) =
+        {
+            Key = Guid.NewGuid()
+            IsActive = true
+            DataVersion = DateTime.UtcNow.Ticks
+            CreatedAt = DateTime.Now
+            CreatedBy = Guid.Empty
+            ResponsibleUserKeys = viewmodel.Employees
+            Date =viewmodel.Date
+            Limits = Domain.Limit.Free (Seq.empty)
+            Positions = list.Empty
+            DisciplineKeys = viewmodel.EventKeys
+            Constraints = None
+            History = Seq.empty
+        }
